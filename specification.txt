@@ -17,6 +17,7 @@ operand
 100 div
 101 mul
 110 nand
+111 exit
 
 000 00 0 00
 001 00 1 01
