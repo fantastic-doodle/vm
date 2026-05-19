@@ -1,0 +1,22 @@
+reg 2bit | reg prefix 1bit | reg/imm 2bit | 3bit operand
+register
+00 a 
+01 b
+10 c
+11 d
+
+register prefix 
+0 reg
+1 imm
+
+operand
+000 nop
+001 mov
+010 add
+011 sub
+100 div
+101 mul
+110 nand
+
+000 00 0 00
+001 00 1 01
