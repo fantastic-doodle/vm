@@ -24,6 +24,7 @@ operand
 Extended instruction set for stdout
 
 | 3bit 000 fixed | 1bit prefix | 2bit imm | 2bit operand |
+
 prefix
 0 nop
 1 use Extended instruction
@@ -34,5 +35,8 @@ operand
 10 flush
 11 print
 
-000 1 01 00
-000 1 00 11
+000 1 01 00 20 
+000 1 10 00 24
+000 1 00 00 16
+000 1 01 00 20
+000 1 00 11 19

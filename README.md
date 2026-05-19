@@ -110,13 +110,13 @@ When the Opcode is `000` (Bits 7–5 are `000`), LightVM can interpret the lower
 | `00` | `PUSH` | Appends the 2-bit `Imm` value to the buffer (Max 16 bits / 8 times). |
 | `01` | `POP` | Clears the lowest 2 bits of the buffer (`buf &= !0b11`). |
 | `10` | `FLUSH` | Resets the entire buffer to 0. |
-| `11` | `PRINT` | Prints the buffer contents in binary format (`print:0101...`). |
+| `11` | `PRINT` | Prints the buffer contents. |
 
 #### Extended Encoding Examples
 * **`PUSH 1`** (Push 2-bit immediate value `01` into the buffer):
   * Opcode: `000` | Ext Prefix: `1` | Ext Imm: `01` | Ext Op: `00`
   * **Binary:** `00010100` $\rightarrow$ **Decimal:** `20`
-* **`PRINT`** (Print the buffer binary representation):
+* **`PRINT`** :
   * Opcode: `000` | Ext Prefix: `1` | Ext Imm: `00` | Ext Op: `11`
   * **Binary:** `00010011` $\rightarrow$ **Decimal:** `19`
 
@@ -147,18 +147,24 @@ An interactive session putting values into registers, utilizing the extended std
 
 ```text
 ==========================vm==========================
-37
-register:
-a: 1, b: 0, c: 0, d: 0
 20
 register:
-a: 1, b: 0, c: 0, d: 0
+a: 0, b: 0, c: 0, d: 0
+16
+register:
+a: 0, b: 0, c: 0, d: 0
+24
+register:
+a: 0, b: 0, c: 0, d: 0
+20
+register:
+a: 0, b: 0, c: 0, d: 0
 19
-print:1
+a
 register:
-a: 1, b: 0, c: 0, d: 0
-255
+a: 0, b: 0, c: 0, d: 0
+255 
 register:
-a: 1, b: 0, c: 0, d: 0
+a: 0, b: 0, c: 0, d: 0
 
 ```
