@@ -118,8 +118,8 @@ impl VirtualMachine {
             _ => println!("unknown opcode"),
         }
         println!(
-            "register:\na: {}, b: {}, c: {}, d: {}",
-            self.regs[0], self.regs[1], self.regs[2], self.regs[3]
+            "register:\na: {}, b: {}, c: {}, d: {}, buf: {:b}",
+            self.regs[0], self.regs[1], self.regs[2], self.regs[3],self.buf
         );
     }
 }
