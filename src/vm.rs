@@ -2,6 +2,7 @@ pub struct VirtualMachine {
     regs: [u8; 4],
     buf: u32,
     count: u8,
+    mem: [u8; 4000],
 }
 
 impl VirtualMachine {
@@ -10,6 +11,7 @@ impl VirtualMachine {
             regs: [0; 4],
             buf: 0,
             count: 0,
+            mem: [0;4000]
         }
     }
     pub fn eval(&mut self, codes: &[u8], len: usize) {
@@ -47,7 +49,8 @@ impl VirtualMachine {
         let extended = code & 0b00011111;
         let extended_op = extended & 0b00000011;
         let extened_prefix = (extended >> 4) & 0b1 != 0;
-        let extened_imm = (extended >> 2) & 0b11;
+        //let extened_imm = (extended >> 2) & 0b11;
+        let eextend_prefix = (extended >> 3) & 0b01 == 0;
         let src_val = if prefix == 0 {
             self.regs[src as usize]
         } else {
@@ -60,10 +63,10 @@ impl VirtualMachine {
                     match extended_op {
                         0b00 => {
                             if self.count < 16 {
-                                self.buf |= (extened_imm as u32) << self.count;
+                                self.buf |= (self.regs[src as usize] as u32) << self.count;
                                 self.count = self.count + 2;
                             } else {
-                                println!("out of memory");
+                                println!("out of buf");
                             }
                         }
                         0b01 => {
@@ -87,7 +90,11 @@ impl VirtualMachine {
                         _ => {}
                     }
                 } else {
-                    /*NOP*/
+                    if eextend_prefix {
+                        self.regs[src as usize] = self.mem[self.buf as usize];
+                    }else {
+                        self.mem[self.buf as usize] = self.regs[src as usize];
+                    }
                 }
             }
             0b001 => {

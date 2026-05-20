@@ -1,8 +1,8 @@
-mod vm8bit;
+mod vm;
 use std::fs;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut vm = vm8bit::VirtualMachine::new();
+    let mut vm = vm::VirtualMachine::new();
 
     // 1. 파일을 일단 텍스트 문자열로 읽어옵니다.
     let content = fs::read_to_string("test.txt")?;

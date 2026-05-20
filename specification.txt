@@ -1,4 +1,5 @@
-| 3bit operand | reg 2bit | reg prefix 1bit | reg/imm 2bit |
+------------------------------------------------------------------------------
+| 3bit operand | 2bit reg src | 1bit prefix | 2bit reg/imm dst |
 register
 00 a 
 01 b
@@ -10,7 +11,7 @@ register prefix
 1 imm
 
 operand
-000 nop
+000 use Extended instruction
 001 mov
 010 add
 011 sub
@@ -20,13 +21,13 @@ operand
 111 cmp jump
 
 000 00 0 00
-
+------------------------------------------------------------------------------
 Extended instruction set for stdout
 
-| 3bit 000 fixed | 1bit prefix | 2bit imm | 2bit operand |
+| 3bit 000 fixed | 1bit prefix | 2bit reg src | 2bit operand |
 
 prefix
-0 nop
+0 use Extended Extended instruction
 1 use Extended instruction
 
 operand
@@ -34,13 +35,25 @@ operand
 01 pop
 10 flush
 11 print
+------------------------------------------------------------------------------
+Extended Extended instruction set for LOAD STORE
+| 4bit fixed 0000 | 1bit LOAD/STORE prefix | 2bit reg src | 1bit not used
 
+prefix
+0 LOAD 
+1 STORE
+
+if LOAD then load memory value to reg use buf for pointer 
+if STORE then store reg value to memory use buf for pointer
+
+------------------------------------------------------------------------------
 cmp jump
 
-| 3bit 111 fixed | 1bit prefix | 2bit reg | 2bit reg |
+| 3bit 111 fixed | 1bit prefix | 2bit reg src  | 2bit reg dst |
 
 prefix
 0 exit 
 1 use cmp jump
 
 if src == dst then update pc to buf
+------------------------------------------------------------------------------
