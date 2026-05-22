@@ -14,8 +14,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .collect::<Result<Vec<u8>, _>>()?; // 에러가 없다면 Vec<u8>로 수집합니다.
 
     // 3. 이제 진짜 숫자 배열이 되었으므로 VM에 안전하게 넘겨줍니다!
-    let len = codes.len();
-    vm.eval(&codes, len);
+    vm.run(&codes, 0);
 
     Ok(())
 }

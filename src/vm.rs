@@ -14,17 +14,21 @@ impl VirtualMachine {
             mem: [0;4000]
         }
     }
-    pub fn eval(&mut self, codes: &[u8], len: usize) {
-        let mut i = 0;
+    pub fn run(&mut self,codes: &[u8],start: usize) {
+        self.mem[start..start + codes.len()].copy_from_slice(codes);
+        self.dispatch_loop(start, codes.len());
+    }
+    fn dispatch_loop(&mut self, start: usize, len: usize) {
+        let mut i = start;
         loop {
-            if i == len {
+            if i == start+len {
                 break;
             }
-            let op = (codes[i] >> 5) & 0b111;
+            let op = (self.mem[i] >> 5) & 0b111;
             if op == 0b111 {
-                let prefix = (codes[i] >> 4) & 0b1;
-                let dst_idx = ((codes[i] >> 2) & 0b11) as usize;
-                let src_idx = (codes[i] & 0b11) as usize;
+                let prefix = (self.mem[i] >> 4) & 0b1;
+                let dst_idx = ((self.mem[i] >> 2) & 0b11) as usize;
+                let src_idx = (self.mem[i] & 0b11) as usize;
                 if prefix == 0 {
                     break; // exit
                 } else {
@@ -34,12 +38,12 @@ impl VirtualMachine {
                     }
                 }
             } else {
-                self.execute(codes[i]);
+                self.execute_instruction(self.mem[i]);
             }
             i = i + 1;
         }
     }
-    fn execute(&mut self, code: u8) {
+    fn execute_instruction(&mut self, code: u8) {
         // [op 3bit] [dst 2bit] [prefix 1bit] [src 2bit]
         let op = (code >> 5) & 0b111; // 상위 3비트
         let dst = ((code >> 3) & 0b11) as usize; // 그 다음 2비트
